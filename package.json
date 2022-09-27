@@ -1,0 +1,32 @@
+{
+  "name": "nodejs_project_manager",
+  "version": "1.0.0",
+  "description": "Kodutööna valmiv projekt",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Taavi4n5/NodeJS_Project_manager.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Taavi4n5/NodeJS_Project_manager/issues"
+  },
+  "homepage": "https://github.com/Taavi4n5/NodeJS_Project_manager#readme",
+  "dependencies": {
+    "@types/express": "^4.17.14",
+    "express": "^4.18.1",
+    "typescript": "^4.8.3"
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.18",
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1"
+  }
+}
