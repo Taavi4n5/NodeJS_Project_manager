@@ -31,10 +31,10 @@ app.post('/api/v1/users', usersControllers.createUser);
 // Kasutaja kustutamine
 app.delete('/api/v1/users/:id', usersControllers.deleteUser);
 
-// Projekti loomine
+// Projektide staatuste päring
 app.get('/api/v1/projects/statuses', projectStatusesControllers.getAllProjectStatuses);
 
-// projekti staatus pärimine staatuse id alusel
+// Projekti staatus pärimine staatuse id alusel
 app.get('/api/v1/projects/statuses/:id', projectStatusesControllers.getProjectStatusById);
 
 // Kõikide projektide pärimine
@@ -43,13 +43,13 @@ app.get('/api/v1/projects', projectsControllers.getAllProjects);
 // Projektide pärimine id kaudu
 app.get('/api/v1/projects/:id', projectsControllers.getProjectById);
 
-// projekti loomine
+// Projekti loomine
 app.post('/api/v1/projects', projectsControllers.createProject);
 
-// projekti muutmine
+// Projekti muutmine
 app.patch('/api/v1/projects/:id', projectsControllers.updateProject);
 
-// projekti kustutamine
+// Projekti kustutamine
 app.delete('/api/v1/projects/:id', projectsControllers.deleteProject);
 
 // Kõikide kommentaaride pärimine
@@ -58,7 +58,7 @@ app.get('/api/v1/comments', commentsControllers.getAllComments);
 // Kommentaari pärimine id kaudu
 app.get('/api/v1/comments/:id', commentsControllers.getCommentsById);
 
-// projektiga seotud kommentaaride pärimise endpoint
+// Projektiga seotud kommentaaride pärimise endpoint
 app.get('/api/v1/projects/:id/comments', projectsControllers.getCommentsByProjectId);
 
 // Kommentaari loomine
