@@ -9,4 +9,11 @@ interface IProject extends INewProject {
     id: number;
 }
 
-export {INewProject, IProject};
+interface IProjectToUpdate {
+    id: number;
+    title?: string;
+    content?: string;
+    statusId?: number;
+}
+
+export { INewProject, IProject, IProjectToUpdate };

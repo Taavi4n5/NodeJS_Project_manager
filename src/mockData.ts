@@ -1,7 +1,7 @@
 import { IComment } from "./components/comments/interfaces";
 import { IProject } from "./components/projects/interfaces";
 import { IProjectStatus } from "./components/projectStatuses/interfaces";
-import { IUser, } from "./components/users/interfaces";
+import { IUser } from "./components/users/interfaces";
 
 const users: IUser[] = [
     {
@@ -65,5 +65,7 @@ const comments: IComment[] = [
         content: 'Teise projekti teine kommentaar', 
     },
 ]
+
+
 
 export { users, projects, projectStatuses, comments };
