@@ -3,6 +3,8 @@ import usersControllers from './components/users/controllers';
 import projectStatusesControllers from './components/projectStatuses/controllers';
 import projectsControllers from './components/projects/controllers';
 import commentsControllers from './components/comments/controllers';
+import usersMiddlewares from './components/users/middlewares';
+import projectsMiddlewares from './components/projects/middlewares';
 
 const app = express();
 const PORT = 3000;
@@ -26,7 +28,7 @@ app.get('/api/v1/users/:id', usersControllers.getUserById);
 app.patch('/api/v1/users/:id', usersControllers.updateUser);
 
 // Kasutaja loomine
-app.post('/api/v1/users', usersControllers.createUser);
+app.post('/api/v1/users', usersMiddlewares.checkCreateUserData, usersControllers.createUser);
 
 // Kasutaja kustutamine
 app.delete('/api/v1/users/:id', usersControllers.deleteUser);
@@ -44,7 +46,7 @@ app.get('/api/v1/projects', projectsControllers.getAllProjects);
 app.get('/api/v1/projects/:id', projectsControllers.getProjectById);
 
 // Projekti loomine
-app.post('/api/v1/projects', projectsControllers.createProject);
+app.post('/api/v1/projects', projectsMiddlewares.checkCreateProject , projectsControllers.createProject);
 
 // Projekti muutmine
 app.patch('/api/v1/projects/:id', projectsControllers.updateProject);

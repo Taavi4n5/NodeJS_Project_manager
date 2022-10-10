@@ -33,12 +33,6 @@ const projectsControllers = {
     },
     createProject: (req: Request, res: Response) => {
         const { title, content, userId, statusId } = req.body;
-        if (!title || !content || !userId || !statusId) {
-            return res.status(400).json({
-                success: false,
-                message: `Some data is missing (title, content, userId, statusId)`,
-            });
-        }
         const newProject: INewProject = {
             title,
             content,
