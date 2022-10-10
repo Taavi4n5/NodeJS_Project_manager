@@ -1,114 +1,18 @@
 import express, { Request, Response } from 'express';
+import { IComment } from './components/comments/interfaces';
+import { IProject } from './components/projects/interfaces';
+import { IProjectStatus } from './components/projectStatuses/interfaces';
+import { INewUserWithPassword, IUserWithoutPassword, IUser } from './components/users/interfaces';
+import { users, projectStatuses, projects, comments } from './mockData';
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
 
-interface INewUser {
-    firstName: string;
-    lastName: string;
-    email: string;
-}
 
-interface IUser extends INewUser {
-    id: number;
-}
 
-interface IUserWithPassword extends IUser {
-    password: string;
-}
 
-interface INewProject {
-    userId: number;
-    title: string;
-    content: string;
-    statusId: number;
-}
 
-interface IProject extends INewProject {
-    id: number;
-}
-
-interface INewProjectStatus {
-    status: string;
-}
-
-interface IProjectStatus extends INewProjectStatus {
-    id: number;
-}
-
-interface INewComment {
-    userId: number;
-    projectId: number;
-    content: string;
-}
-
-interface IComment extends INewComment {
-    id: number;
-}
-
-const users: IUserWithPassword[] = [
-    {
-        id: 1,
-        firstName: 'Juhan',
-        lastName: 'Juurikas',
-        email: 'juhan@juurikas.ee',
-        password: 'juhan',
-    },
-];
-
-const projects: IProject[] = [
-    {
-        id: 1,
-        title: 'Esimene projekt',
-        content: 'Esimese projekti sisu',
-        userId: 2,
-        statusId: 7,
-    },
-    {
-        id: 2,
-        title: 'Teine projekt',
-        content: 'Teise projekti sisu',
-        userId: 1,
-        statusId: 2,
-    },
-];
-
-const projectStatuses: IProjectStatus[] = [
-    {
-        id: 1,
-        status: 'Draft',
-    },
-    {
-        id: 2,
-        status: 'Public',
-    },
-    {
-        id: 3,
-        status: 'Private',
-    },
-];
-
-const comments: IComment[] = [
-    {
-        id: 1,
-        userId: 1,
-        projectId: 1,
-        content: 'Esimese projekti esimene kommentaar', 
-    },
-    {
-        id: 2,
-        userId: 1,
-        projectId: 2,
-        content: 'Teise projekti esimene kommentaar', 
-    },
-    {
-        id: 3,
-        userId: 1,
-        projectId: 2,
-        content: 'Teise projekti teine kommentaar', 
-    },
-]
 
 // Kontroll serveri toimimise kohta
 app.get('/api/v1/health', (req: Request, res: Response) => {
@@ -136,7 +40,7 @@ app.get('/api/v1/users', (req: Request, res: Response) => {
 // Kasutaja pärimine id kaudu
 app.get('/api/v1/users/:id', (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
-    let user: IUserWithPassword | undefined = findUserById(id);
+    let user: IUserWithoutPassword | undefined = findUserById(id);
     if (!user) {
         return res.status(404).json({
             success: false,
@@ -158,7 +62,7 @@ app.get('/api/v1/users/:id', (req: Request, res: Response) => {
 app.patch('/api/v1/users/:id', (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
     const { firstName, lastName, email, password } = req.body;
-    const user: IUserWithPassword | undefined = findUserById(id);
+    const user: IUserWithoutPassword | undefined = findUserById(id);
     if (!user) {
         return res.status(404).json({
             success: false,
@@ -175,7 +79,6 @@ app.patch('/api/v1/users/:id', (req: Request, res: Response) => {
     if (firstName) user.firstName = firstName;
     if (lastName) user.lastName = lastName;
     if (email) user.email = email;
-    if (password) user.password = password;
 
     return res.status(200).json({
         success: true,
@@ -193,7 +96,7 @@ app.post('/api/v1/users', (req: Request, res: Response) => {
         });
     }
     const id = users.length + 1;
-    const newUser: IUserWithPassword = {
+    const newUser: IUser = {
         id,
         firstName,
         lastName,
@@ -368,7 +271,7 @@ app.delete('/api/v1/projects/:id', (req: Request, res: Response) => {
 // Kõikide kommentaaride pärimine
 app.get('/api/v1/comments', (req: Request, res: Response) => {
     const commentsWithUsers = comments.map(comment => {
-        let user: IUserWithPassword | undefined = findUserById(comment.id);
+        let user: IUserWithoutPassword | undefined = findUserById(comment.id);
         if (!user) user = unknownUser();
         const userWithoutPassword = getUserWithoutPassword(user);
         const commentWithUser = {
@@ -464,12 +367,12 @@ app.delete('/api/v1/comments/:id', (req: Request, res: Response) => {
 
 /* Kasutaja funktsioonid */
 
-const findUserById = (id: number): IUserWithPassword | undefined => {
-    let user: IUserWithPassword | undefined = users.find(element => element.id === id);
+const findUserById = (id: number): IUserWithoutPassword | undefined => {
+    let user: IUserWithoutPassword | undefined = users.find(element => element.id === id);
     return user;
 };
 
-const getUserWithoutPassword = (user: IUserWithPassword): IUser => {
+const getUserWithoutPassword = (user: IUserWithoutPassword): IUserWithoutPassword => {
     return {
         id: user.id,
         firstName: user.firstName,
@@ -478,7 +381,7 @@ const getUserWithoutPassword = (user: IUserWithPassword): IUser => {
     };
 };
 
-const unknownUser = (): IUserWithPassword => {
+const unknownUser = (): IUser => {
     return {
             id: 0,
             firstName: 'Jane',
@@ -499,7 +402,7 @@ const findProjectById = (id: number): IProject | undefined => {
 
 const getProjectWithStatusAndUser = (project: IProject) => {
     const projectStatus = getProjectStatusById(project.statusId);
-    let user: IUserWithPassword | undefined = findUserById(project.userId);
+    let user: IUserWithoutPassword | undefined = findUserById(project.userId);
     if (!user) user = unknownUser();
     const userWithoutPassword = getUserWithoutPassword(user);
 
