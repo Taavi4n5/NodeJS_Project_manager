@@ -1,73 +1,21 @@
 import express, { Request, Response } from 'express';
-import usersControllers from './components/users/controllers';
-import projectStatusesControllers from './components/projectStatuses/controllers';
-import projectsControllers from './components/projects/controllers';
-import commentsControllers from './components/comments/controllers';
-import usersMiddlewares from './components/users/middlewares';
-import projectsMiddlewares from './components/projects/middlewares';
+import commentsRoutes from './components/comments/routes';
+import projectsRoutes from './components/projects/routes';
+import usersRoutes from './components/users/routes';
+import generalRoutes from './general/routes';
+import projectStatusesRoutes from './components/projectStatuses/routes';
 
 const app = express();
 const PORT = 3000;
+const path = '/api/v1';
 
 app.use(express.json());
 
-// Kontroll serveri toimimise kohta
-app.get('/api/v1/health', (req: Request, res: Response) => {
-    res.status(200).json({
-        message: 'It works!',
-    });
-});
-
-// Kõikide kasutajate pärimine
-app.get('/api/v1/users', usersControllers.getAllUsers);
-
-// Kasutaja pärimine id kaudu
-app.get('/api/v1/users/:id', usersControllers.getUserById);
-
-// Kasutaja muutmine
-app.patch('/api/v1/users/:id', usersControllers.updateUser);
-
-// Kasutaja loomine
-app.post('/api/v1/users', usersMiddlewares.checkCreateUserData, usersControllers.createUser);
-
-// Kasutaja kustutamine
-app.delete('/api/v1/users/:id', usersControllers.deleteUser);
-
-// Projektide staatuste päring
-app.get('/api/v1/projects/statuses', projectStatusesControllers.getAllProjectStatuses);
-
-// Projekti staatus pärimine staatuse id alusel
-app.get('/api/v1/projects/statuses/:id', projectStatusesControllers.getProjectStatusById);
-
-// Kõikide projektide pärimine
-app.get('/api/v1/projects', projectsControllers.getAllProjects);
-
-// Projektide pärimine id kaudu
-app.get('/api/v1/projects/:id', projectsControllers.getProjectById);
-
-// Projekti loomine
-app.post('/api/v1/projects', projectsMiddlewares.checkCreateProject , projectsControllers.createProject);
-
-// Projekti muutmine
-app.patch('/api/v1/projects/:id', projectsControllers.updateProject);
-
-// Projekti kustutamine
-app.delete('/api/v1/projects/:id', projectsControllers.deleteProject);
-
-// Kõikide kommentaaride pärimine
-app.get('/api/v1/comments', commentsControllers.getAllComments);
-
-// Kommentaari pärimine id kaudu
-app.get('/api/v1/comments/:id', commentsControllers.getCommentsById);
-
-// Projektiga seotud kommentaaride pärimise endpoint
-app.get('/api/v1/projects/:id/comments', projectsControllers.getCommentsByProjectId);
-
-// Kommentaari loomine
-app.post('/api/v1/comments', commentsControllers.createComment);
-
-// Kommentaari kustutamine
-app.delete('/api/v1/comments/:id', commentsControllers.deleteComment);
+app.use(`${path}/health`, generalRoutes); //Serveri toimimise kontroll
+app.use(`${path}/users`, usersRoutes); // kasutaja
+app.use(`${path}/projectStatuses`, projectStatusesRoutes); // Projektistaatus
+app.use(`${path}/comments`, commentsRoutes); // kommentaarid
+app.use(`${path}/projects`, projectsRoutes); // projektid
 
 app.listen(PORT, () => {
     console.log('Server is running');
