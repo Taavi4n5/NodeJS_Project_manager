@@ -1,12 +1,12 @@
 import { comments } from "../../mockData";
-import { IUserWithoutPassword } from "../users/interfaces";
+import { IUser } from "../users/interfaces";
 import usersServices from "../users/services";
 import { IComment, INewComment } from "./interfaces";
 
 const commentsServices = {
     getAllComments: () => {
         const commentsWithUsers = comments.map(comment => {
-        let user: IUserWithoutPassword | undefined = usersServices.findUserById(comment.id);
+        let user: IUser | undefined = usersServices.findUserById(comment.id);
         if (!user) user = usersServices.unknownUser();
         const userWithoutPassword = usersServices.getUserWithoutPassword(user);
         const commentWithUser = {

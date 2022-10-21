@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { users } from "../../mockData";
-import { IUserWithoutPassword, IUser } from "./interfaces";
+import { IUserWithoutPassword, IUser, INewUser, IUserWithoutRole } from "./interfaces";
 import services from "./services";
 import usersServices from "./services";
 
@@ -15,7 +15,7 @@ const usersControllers = {
     },
     getUserById: (req: Request, res: Response) => {
         const id = parseInt(req.params.id);
-        let user: IUserWithoutPassword | undefined = usersServices.findUserById(id);
+        let user: IUser | undefined = usersServices.findUserById(id);
         if (!user) {
             return res.status(404).json({
                 success: false,
@@ -35,7 +35,7 @@ const usersControllers = {
     updateUser: (req: Request, res: Response) => {
         const id = parseInt(req.params.id);
         const { firstName, lastName, email, password } = req.body;
-        const user: IUserWithoutPassword | undefined = usersServices.findUserById(id);
+        const user: IUser| undefined = usersServices.findUserById(id);
         if (!user) {
             return res.status(404).json({
                 success: false,
@@ -49,30 +49,37 @@ const usersControllers = {
             });
         }
 
-        if (firstName) user.firstName = firstName;
-        if (lastName) user.lastName = lastName;
-        if (email) user.email = email;
-
+        const userToUpdate: IUserWithoutRole = {
+            id,
+            firstName,
+            lastName,
+            email,
+            password,
+        };
+    
+        usersServices.updateUser(userToUpdate);
+    
         return res.status(200).json({
             success: true,
             message: `User updated`,
         });
     },
-    createUser: (req: Request, res: Response) => {
-        const { firstName, lastName, email, password } = req.body;
+    createUser: async (req: Request, res: Response) => {
+        const { firstName, lastName, email, password, role } = req.body;
         if (!firstName || !lastName || !email || !password) {
             return res.status(400).json({
                 success: false,
                 message: `Some data is missing (firstName, lastName, email, password)`,
             });
         }
-        const tmpUser = {
+        const newUser: INewUser = {
             firstName,
             lastName,
             email,
-            password
+            password,
+            role,
         };
-        const id = usersServices.createUser(tmpUser);
+        const id = await usersServices.createUser(newUser);
         return res.status(201).json({
             success: true,
             message: `User with id ${id} created`,
@@ -80,19 +87,19 @@ const usersControllers = {
     },
     deleteUser: (req: Request, res: Response) => {
         const id = parseInt(req.params.id);
-        const index = users.findIndex(element => element.id === id);
-        if (index === -1) {
+        const result = usersServices.deleteUser(id);
+        if (!result) {
             return res.status(404).json({
                 success: false,
                 message: `User not found`,
             });
         }
-        users.splice(index, 1);
+        
         return res.status(200).json({
             success: true,
             message: `User deleted`,
         });
-    }
+    },
 };
 
 export default usersControllers;

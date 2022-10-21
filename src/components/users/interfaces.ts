@@ -1,11 +1,12 @@
-interface INewUserWithPassword {
+interface INewUser {
     firstName: string;
     lastName: string;
     email: string;
     password: string;
+    role: 'Admin' | 'User';
 }
 
-interface IUser extends INewUserWithPassword {
+interface IUser extends INewUser {
     id: number;
 }
 
@@ -14,6 +15,15 @@ interface IUserWithoutPassword {
     firstName: string;
     lastName: string;
     email: string;
+    role: 'Admin' | 'User';
 }
 
-export {INewUserWithPassword, IUserWithoutPassword, IUser};
+interface IUserWithoutRole {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+}
+
+export {INewUser, IUserWithoutPassword, IUser, IUserWithoutRole };

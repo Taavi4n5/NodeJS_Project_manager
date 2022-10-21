@@ -1,6 +1,6 @@
 import { projects } from "../../mockData";
 import projectStatusesServices from "../projectStatuses/services";
-import { IUserWithoutPassword } from "../users/interfaces";
+import { IUser, IUserWithoutPassword } from "../users/interfaces";
 import usersServices from "../users/services";
 import { INewProject, IProject, IProjectToUpdate } from "./interfaces";
 
@@ -20,7 +20,7 @@ const projectsServices = {
     },
     getProjectWithStatusAndUser: (project: IProject) => {
         const projectStatus = projectStatusesServices.getProjectStatusById(project.statusId);
-        let user: IUserWithoutPassword | undefined = usersServices.findUserById(project.userId);
+        let user: IUser | undefined = usersServices.findUserById(project.userId);
         if (!user) user = usersServices.unknownUser();
         const userWithoutPassword = usersServices.getUserWithoutPassword(user);
 
