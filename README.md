@@ -4,7 +4,17 @@
 HK TLU Programmeerimne II raames kodutöö jaoks kirjutatud kood millega proovitakse luua projekti haldaja API.
 
 # Dokumentatsioon
+
+## Käivita API
+
+1. Klooni repositoorium, terminalis(command prompt või kasutatava IDE terminalis) soovitud asukohas: ``` git clone https://github.com/Taavi4n5/NodeJS_Project_manager.git ``` ja liigu samasse kausta ``` cd NodeJS_Project_manager ```
+
+2. Lae alla npm(terminalis): ``` npm install ```
+
+3. Käivita projekt: ``` npm start ```, avatakse (https://localhost:3000 "https://localhost:3000" )
 ## Endpointid
+
+# Testimiseks sobib nii (https://www.postman.com/ "Postman") kui ka Visual Studio Code (https://www.thunderclient.com/ "Thunder Client") extension
 ### Kontroll 
 
 1. Kontrolli API toimimist: ``` GET api/v1/health ```
