@@ -17,48 +17,48 @@ HK TLU Programmeerimne II raames kodutöö jaoks kirjutatud kood millega proovit
 ### Testimiseks sobib nii [Postman](https://www.postman.com/ "Postman") kui ka Visual Studio Code [Thunder Client](https://www.thunderclient.com/ "Thunder Client") lisa
 ### Kontroll 
 
-1. Kontrolli API toimimist: ``` GET api/v1/health ```
+1. Kontrolli API toimimist: ``` GET api/v1/health ``` **KÕIGILE**
 
 ### Kasutaja
 
-1. Sisselogimine: ``` POST api/v1/login ```
+1. Sisselogimine: ``` POST api/v1/login ``` **KÕIGILE**
 
-2. Kõigi kasutajate nimekiri: ``` GET api/v1/users ```
+2. Kõigi kasutajate nimekiri: ``` GET api/v1/users ``` **ADMIN**
 
-3. Ühe kasutaja valimine ID kaudu: ``` GET api/v1/users/:id/ ```
+3. Ühe kasutaja valimine ID kaudu: ``` GET api/v1/users/:id/ ``` **KÕIGILE**
 
-4. Loo kasutaja ``` POST api/v1/users/:id/ ```
+4. Loo kasutaja ``` POST api/v1/users/:id/ ``` **KÕIGILE**
 
-5. Muuda kasutajat ``` PATCH api/v1/users/:id/ ```
+5. Muuda kasutajat ``` PATCH api/v1/users/:id/ ``` **SISSELOGITUD KASUTAJA**
 
-6. Kustuta kasutaja ``` DELETE api/v1/users/:id/ ```
+6. Kustuta kasutaja ``` DELETE api/v1/users/:id/ ``` **SISSELOGITUD KASUTAJA**
 
 ### Projektid
 
-1. Kõigi projektide nimekiri: ``` GET api/v1/projects ```
+1. Kõigi projektide nimekiri: ``` GET api/v1/projects ``` **KÕIGILE**
 
-2. Ühe projekti valimine ID kaudu: ``` GET api/v1/projects/:id/ ```
+2. Ühe projekti valimine ID kaudu: ``` GET api/v1/projects/:id/ ``` **KÕIGILE**
 
-3. Projekti loomine: ``` POST api/v1/projects ```
+3. Projekti loomine: ``` POST api/v1/projects ``` **SISSELOGITUD KASUTAJA**
 
-4. Projekti muutmine: ``` PATCH /api/v1/projects/:id ```
+4. Projekti muutmine: ``` PATCH /api/v1/projects/:id ``` **SISSELOGITUD KASUTAJA**
 
-5. Projekti kustutamine: ``` DELETE /api/v1/projects/:id ```
+5. Projekti kustutamine: ``` DELETE /api/v1/projects/:id ``` **SISSELOGITUD KASUTAJA**
 
-6. Kindla projektiga seotud kommentaaride nimekiri: ``` GET /api/v1/projects/:id/comments ```
+6. Kindla projektiga seotud kommentaaride nimekiri: ``` GET /api/v1/projects/:id/comments ``` **KÕIGILE**
 
 ### Projekti staatused
 
-1. Staatuste nimekiri: ``` GET api/v1/projects/statuses ```
+1. Staatuste nimekiri: ``` GET api/v1/projects/statuses ``` **KÕIGILE**
 
-2. Ühe kindla projekti staatuse valik ID kaudu: ``` GET api/v1/projects/statuses/:id ```
+2. Ühe kindla projekti staatuse valik ID kaudu: ``` GET api/v1/projects/statuses/:id ``` **KÕIGILE**
 
 ### Kommentaarid
 
-1. Kõikide kommentaaride nimekiri: ``` GET api/v1/comments ```
+1. Kõikide kommentaaride nimekiri: ``` GET api/v1/comments ``` **KÕIGILE**
 
-2. Ühe kommentaari valimine ID kaudu: ``` GET api/v1/comments/:id ```
+2. Ühe kommentaari valimine ID kaudu: ``` GET api/v1/comments/:id ``` **KÕIGILE**
 
-3. Loo kommentaar: ``` POST /api/v1/comments ```
+3. Loo kommentaar: ``` POST /api/v1/comments ``` **SISSELOGITUD KASUTAJA**
 
-4. Kustuta kommentaar: ``` DELETE api/v1/comments/:id ```
+4. Kustuta kommentaar: ``` DELETE api/v1/comments/:id ``` **SISSELOGITUD KASUTAJA**
