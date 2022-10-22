@@ -14,7 +14,7 @@ const path = '/api/v1';
 app.use(express.json());
 
 app.use(`${path}/health`, generalRoutes); //Serveri toimimise kontroll
-app.post(`${path}/login`, authController.login);
+app.post(`${path}/login`, authController.login); // logimine
 app.use(`${path}/users`, usersRoutes); // kasutaja
 app.use(`${path}/projectStatuses`, projectStatusesRoutes); // Projektistaatus
 app.use(`${path}/comments`, commentsRoutes); // kommentaarid

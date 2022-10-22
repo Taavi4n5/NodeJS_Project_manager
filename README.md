@@ -11,25 +11,27 @@ HK TLU Programmeerimne II raames kodutöö jaoks kirjutatud kood millega proovit
 
 2. Lae alla npm(terminalis): ``` npm install ```
 
-3. Käivita projekt: ``` npm start ```, avatakse (https://localhost:3000 "https://localhost:3000" )
+3. Käivita projekt: ``` npm start ```, avatakse [API töökeskond](https://localhost:3000 "https://localhost:3000" )
 ## Endpointid
 
-# Testimiseks sobib nii (https://www.postman.com/ "Postman") kui ka Visual Studio Code (https://www.thunderclient.com/ "Thunder Client") extension
+### Testimiseks sobib nii [Postman](https://www.postman.com/ "Postman") kui ka Visual Studio Code [Thunder Client](https://www.thunderclient.com/ "Thunder Client") lisa
 ### Kontroll 
 
 1. Kontrolli API toimimist: ``` GET api/v1/health ```
 
 ### Kasutaja
 
-1. Kõigi kasutajate nimekiri: ``` GET api/v1/users ```
+1. Sisselogimine: ``` POST api/v1/login ```
 
-2. Ühe kasutaja valimine ID kaudu: ``` GET api/v1/users/:id/ ```
+2. Kõigi kasutajate nimekiri: ``` GET api/v1/users ```
 
-3. Loo kasutaja ``` POST api/v1/users/:id/ ```
+3. Ühe kasutaja valimine ID kaudu: ``` GET api/v1/users/:id/ ```
 
-4. Muuda kasutajat ``` PATCH api/v1/users/:id/ ```
+4. Loo kasutaja ``` POST api/v1/users/:id/ ```
 
-5. Kustuta kasutaja ``` DELETE api/v1/users/:id/ ```
+5. Muuda kasutajat ``` PATCH api/v1/users/:id/ ```
+
+6. Kustuta kasutaja ``` DELETE api/v1/users/:id/ ```
 
 ### Projektid
 
