@@ -5,7 +5,7 @@ import usersMiddlewares from './middlewares';
 const usersRoutes = express.Router();
 
 usersRoutes
-    .get('/', authMiddleware.isAdmin, usersControllers.getAllUsers)
+    .get('/', usersControllers.getAllUsers)
     .get('/:id', usersControllers.getUserById)
     .post('/', usersMiddlewares.checkCreateUserData, usersControllers.createUser)
     .patch('/:id', authMiddleware.isLoggedIn, usersControllers.updateUser)

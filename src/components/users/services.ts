@@ -1,3 +1,4 @@
+import pool from "../../database";
 import { users } from "../../mockData";
 import authServices from "../auth/services";
 import { INewUser, IUser, IUserWithoutPassword, IUserWithoutRole } from "./interfaces";
@@ -30,11 +31,13 @@ const usersServices = {
                 role: 'User'
             };
     },
-    getAllUsers: () => {
+    getAllUsers: async () => {
             const usersWithoutPassword = users.map(user => {
             const userWithoutPassword = usersServices.getUserWithoutPassword(user);
             return userWithoutPassword;
         })
+        const u = await pool.query('SELECT firstName, lastName, email, role FROM projectmanagerapi_db.users;');
+        console.log(u);
         return usersWithoutPassword;
     },
     createUser: async ( user: INewUser ):Promise<number> => {

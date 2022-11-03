@@ -6,10 +6,10 @@ import generalRoutes from './components/general/routes';
 import projectStatusesRoutes from './components/projectStatuses/routes';
 import authController from './components/auth/controllers';
 import authMiddleware from './components/auth/middlewares';
+import config from './apiConfig';
+const { path, PORT } = config;
 
 const app = express();
-const PORT = 3000;
-const path = '/api/v1';
 
 app.use(express.json());
 

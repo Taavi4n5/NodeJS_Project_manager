@@ -1,14 +1,14 @@
 import bcrypt from 'bcrypt';
 import { IUser } from '../users/interfaces';
 import jwt from 'jsonwebtoken';
+import config from '../../apiConfig';
+const { saltRounds, jwtSecret } = config;
 
-
-const saltRounds = 10;
-const jwtSecret = '$2b$10$WvJOyK9rUv.SLGaLbbof3uVp/ufQSWczdJIQE/ktzmaeu3WO4eDlC';
 
 const authServices = {
   hash: async (password: string): Promise<string> => {
       const hash = await bcrypt.hash(password, saltRounds);
+      console.log(hash);
       return hash;
   },
   compare: async (password: string, hash: string): Promise<Boolean> => {
