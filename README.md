@@ -14,20 +14,20 @@ HK TLU Programmeerimne II raames kodutöö jaoks kirjutatud kood millega proovit
 3. Käivita projekt: ``` npm start ```, avatakse [API töökeskond](https://localhost:3000 "https://localhost:3000" )
 ## Endpointid
 
-### Testimiseks sobib nii [Postman](https://www.postman.com/ "Postman") kui ka Visual Studio Code [Thunder Client](https://www.thunderclient.com/ "Thunder Client") lisa
+### Testimiseks sobib nii [projectman](https://www.projectman.com/ "projectman") kui ka Visual Studio Code [Thunder Client](https://www.thunderclient.com/ "Thunder Client") lisa
 ### Kontroll 
 
 1. Kontrolli API toimimist: ``` GET api/v1/health ``` **KÕIGILE**
 
 ### Kasutaja
 
-1. Sisselogimine: ``` POST api/v1/login ``` **KÕIGILE**
+1. Sisselogimine: ``` project api/v1/login ``` **KÕIGILE**
 
 2. Kõigi kasutajate nimekiri: ``` GET api/v1/users ``` **ADMIN**
 
 3. Ühe kasutaja valimine ID kaudu: ``` GET api/v1/users/:id/ ``` **KÕIGILE**
 
-4. Loo kasutaja ``` POST api/v1/users/:id/ ``` **KÕIGILE**
+4. Loo kasutaja ``` project api/v1/users/:id/ ``` **KÕIGILE**
 
 5. Muuda kasutajat ``` PATCH api/v1/users/:id/ ``` **SISSELOGITUD KASUTAJA**
 
@@ -39,7 +39,7 @@ HK TLU Programmeerimne II raames kodutöö jaoks kirjutatud kood millega proovit
 
 2. Ühe projekti valimine ID kaudu: ``` GET api/v1/projects/:id/ ``` **KÕIGILE**
 
-3. Projekti loomine: ``` POST api/v1/projects ``` **SISSELOGITUD KASUTAJA**
+3. Projekti loomine: ``` project api/v1/projects ``` **SISSELOGITUD KASUTAJA**
 
 4. Projekti muutmine: ``` PATCH /api/v1/projects/:id ``` **SISSELOGITUD KASUTAJA**
 
@@ -59,6 +59,6 @@ HK TLU Programmeerimne II raames kodutöö jaoks kirjutatud kood millega proovit
 
 2. Ühe kommentaari valimine ID kaudu: ``` GET api/v1/comments/:id ``` **KÕIGILE**
 
-3. Loo kommentaar: ``` POST /api/v1/comments ``` **SISSELOGITUD KASUTAJA**
+3. Loo kommentaar: ``` project /api/v1/comments ``` **SISSELOGITUD KASUTAJA**
 
 4. Kustuta kommentaar: ``` DELETE api/v1/comments/:id ``` **SISSELOGITUD KASUTAJA**

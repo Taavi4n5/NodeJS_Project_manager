@@ -1,9 +1,10 @@
-interface INewProjectStatus {
+import { RowDataPacket } from 'mysql2';
+
+interface IProjectStatus {
+    id?: number;
     status: string;
 }
 
-interface IProjectStatus extends INewProjectStatus {
-    id: number;
-}
+interface IProjectStatusSQL extends IProjectStatus, RowDataPacket {}
 
-export { INewProjectStatus, IProjectStatus};
+export { IProjectStatus, IProjectStatusSQL };

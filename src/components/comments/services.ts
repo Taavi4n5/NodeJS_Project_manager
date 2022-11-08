@@ -1,46 +1,33 @@
-import { comments } from "../../mockData";
-import { IUser } from "../users/interfaces";
-import usersServices from "../users/services";
-import { IComment, INewComment } from "./interfaces";
+import { IComment, ICommentSQL } from './interfaces';
+import pool from '../../database';
+import { FieldPacket, ResultSetHeader } from 'mysql2';
+
 
 const commentsServices = {
-    getAllComments: () => {
-        const commentsWithUsers = comments.map(comment => {
-        let user: IUser | undefined = usersServices.findUserById(comment.id);
-        if (!user) user = usersServices.unknownUser();
-        const userWithoutPassword = usersServices.getUserWithoutPassword(user);
-        const commentWithUser = {
-            id: comment.id,
-            content: comment.content,
-            user: userWithoutPassword,
-        };
-        return commentWithUser;
-    });
-    return commentsWithUsers
+    getAllComments: async  (): Promise<ICommentSQL> => {
+        const [comments]: [ICommentSQL[], FieldPacket[]] = await pool.query(`SELECT comments.id, comments.dateCreated, users.id AS userId, users.firstName, users.lastName FROM comments INNER JOIN users ON comments.user_id = users.id WHERE comments.dateDeleted IS NULL;`);
+        return comments[0];
     },
-    getCommentById: (id: number): IComment | undefined => {
-        const comment = comments.find(element => {
-            return element.id === id;
-        });
-        return comment;
+    getCommentById: async (id: number): Promise<ICommentSQL> => {
+        const [comment]: [ICommentSQL[], FieldPacket[]] = await pool.query(`SELECT comments.id, comments.content, comments.dateCreated, users.id AS userId, users.firstName, users.lastName FROM comments INNER JOIN users  ON comments.users_id = users.id WHERE comments.id = ? AND comments.dateDeleted IS NULL;`, [id]);
+          return comment[0];
     },
-    findCommentsByProjectId: (id: number): IComment[] => {
-        const projectComments = comments.filter(comment => comment.projectId === id);
-        return projectComments;
+    findCommentsByProjectId: async (id: number): Promise<ICommentSQL[]> => {
+        const [comments]: [ICommentSQL[], FieldPacket[]] = await pool.query(`SELECT comments.id, comments.content, comments.dateCreated, users.id AS userId, users.firstName, users.lastName FROM comments INNER JOIN users ON comments.userId = users.id WHERE comments.projects_id = ? AND comments.dateDeleted IS NULL;`, [id]);
+        return comments;
     },
-    createComment: (newComment: INewComment) => {
-        const id = comments.length + 1;
+    createComment: async  (newComment: IComment): Promise<number> => {
         const comment: IComment = {
-            id,
-            ... newComment
+          ...newComment,
         };
-        comments.push(comment);
-        return id;
+        const [result]: [ResultSetHeader, FieldPacket[]] = await pool.query('INSERT INTO comments SET ?;', [comment]);
+        return result.insertId;
     },
-    deleteComments: (id: number): Boolean => {
-        const index = comments.findIndex(element => element.id === id);
-        if (index === -1) return false;
-        comments.splice(index, 1);
+    deleteComments: async (id: number): Promise<Boolean> => {
+        const [result]: [ResultSetHeader, FieldPacket[]] = await pool.query('UPDATE comments SET deletedDate = ? WHERE id = ?;', [Date.now(), id]);
+        if (result.affectedRows < 1) {
+          return false;
+        }
         return true;
     },
 }

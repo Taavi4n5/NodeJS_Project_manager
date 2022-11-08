@@ -1,19 +1,13 @@
-interface INewProject {
-    userId: number;
-    title: string;
-    content: string;
-    statusId: number;
-}
+import { RowDataPacket } from 'mysql2';
 
-interface IProject extends INewProject {
-    id: number;
-}
-
-interface IProjectToUpdate {
-    id: number;
+interface IProject {
+    id?: number;
+    userId?: number;
     title?: string;
     content?: string;
     statusId?: number;
 }
 
-export { INewProject, IProject, IProjectToUpdate };
+interface IProjectSQL extends IProject, RowDataPacket {}
+
+export { IProject, IProjectSQL };

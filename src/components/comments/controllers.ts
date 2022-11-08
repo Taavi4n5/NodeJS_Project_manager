@@ -1,35 +1,35 @@
 import { Request, Response } from "express";
-import { INewComment } from "./interfaces";
+import { IComment } from "./interfaces";
 import commentsServices from "./services";
 
 const commentsControllers = {
-    getAllComments: (req: Request, res: Response) => {
-        const commentWithUsers = commentsServices.getAllComments();
-
+    getAllComments: async (req: Request, res: Response) => {
+        const comments = await commentsServices.getAllComments();
+    
         res.status(200).json({
-            success: true,
-            message: 'List of all comments',
-            comments: commentWithUsers,
+          success: true,
+          message: 'List of all comments',
+          comments,
         });
     },
-    getCommentsById: (req: Request, res: Response) => {
-        const id = parseInt(req.params.id);
-        const comment = commentsServices.getCommentById(id);
+    getCommentsById: async (req: Request, res: Response) => {
+        const id = parseInt(req.params.id, 10);
+        const comment = await commentsServices.getCommentById(id);
         if (!comment) {
-            return res.status(404).json({
-                success: false,
-                message: `Comment not found`,
-            });
+          return res.status(404).json({
+            success: false,
+            message: 'Comment not found',
+          });
         }
         return res.status(200).json({
-            success: true,
-            message: `Comment`,
-            data: {
-                comment,
-            },
+          success: true,
+          message: 'Comment',
+          data: {
+            comment,
+          },
         });
     },
-    createComment: (req: Request, res: Response) => {
+    createComment: async (req: Request, res: Response) => {
         const { projectId, content } = req.body;
         let { userId } = req.body;
         if (!projectId || !content) {
@@ -39,30 +39,30 @@ const commentsControllers = {
             });
         }
         if (!userId) userId = null;
-        const newComment: INewComment = {
+        const newComment: IComment = {
             userId,
             projectId,
             content,
         };
-        const id: number = commentsServices.createComment(newComment);
+        const id: number = await commentsServices.createComment(newComment);
         return res.status(201).json({
             success: true,
             message: `comment with id ${id} created`,
         });
     },
-    deleteComment: (req: Request, res: Response) => {
-        const id = parseInt(req.params.id);
-        const result = commentsServices.deleteComments(id);
-        if (!result) {
-            return res.status(404).json({
-                success: false,
-                message: `Comment not found`,
-            });
-        }
-        return res.status(200).json({
-            success: true,
-            message: `Comment deleted`,
-        });
+    deleteComment: async (req: Request, res: Response) => {
+        const id = parseInt(req.params.id, 10);
+    const result = await commentsServices.deleteComments(id);
+    if (!result) {
+      return res.status(404).json({
+        success: false,
+        message: 'Could not find the comment',
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: 'Comment deleted successfully',
+    });
     }
 };
 

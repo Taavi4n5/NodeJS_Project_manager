@@ -3,11 +3,11 @@ import projectStatusesServices from "../projectStatuses/services";
 import { IProjectStatus } from "./interfaces";
 
 const projectStatusesControllers = {
-    getAllProjectStatuses: (req: Request, res: Response) => {
-        const projectStatuses: IProjectStatus[] = projectStatusesServices.getAllPostStatuses();
+    getAllProjectStatuses: async (req: Request, res: Response) => {
+        const projectStatuses: IProjectStatus[] = await projectStatusesServices.getAllProjectStatuses();
         res.status(200).json({
             success: true,
-            message: 'List of project statuses',
+            message: 'Project status',
             projectStatuses,
         });
     },
@@ -17,12 +17,12 @@ const projectStatusesControllers = {
         if (!projectStatus) {
             return res.status(404).json({
                 success: false,
-                message: `project status not found`,
+                message: `Could not find project status`,
             });
         }
         return res.status(200).json({
             success: true,
-            message: `project status`,
+            message: `Project status`,
             data: {
                 projectStatus,
             },

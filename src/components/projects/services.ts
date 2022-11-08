@@ -1,60 +1,45 @@
-import { projects } from "../../mockData";
-import projectStatusesServices from "../projectStatuses/services";
-import { IUser, IUserWithoutPassword } from "../users/interfaces";
-import usersServices from "../users/services";
-import { INewProject, IProject, IProjectToUpdate } from "./interfaces";
+import { FieldPacket, ResultSetHeader } from 'mysql2';
+import pool from '../../database';
+import { IProject, IProjectSQL } from './interfaces';
 
 const projectsServices = {
-    getAllProjects: () => {
-        const projectsWithStatusesAndUsers = projects.map(project => {
-            const projectWithStatusAndUser = projectsServices.getProjectWithStatusAndUser(project);
-            return projectWithStatusAndUser;
-        });
-        return projectsWithStatusesAndUsers;
+    getAllProjects: async (): Promise<IProjectSQL[]> => {
+        const [projects]: [IProjectSQL[], FieldPacket[]] = await pool.query(`SELECT projects.id, projects.title, projects.content, projects.dateCreated, users.id AS userId, users.firstName, users.lastName FROM projects INNER JOIN users ON projects.users_id = users.id WHERE projects.dateDeleted IS NULL;`);
+        return projects;
     },
-    findProjectById: (id: number): IProject | undefined => {
-        const project = projects.find(element => {
-            return element.id === id;
-        });
-        return project;
+    findProjectById: async (id: number): Promise<IProjectSQL> => {
+        const [projects]: [IProjectSQL[], FieldPacket[]] = await pool.query(`SELECT projects.id, projects.title, projects.content, projects.createdDate, users.id AS userId, users.firstName, users.lastName FROM projects INNER JOIN users ON projects.users_id = users.id WHERE projects.id = ? AND projects.dateDeleted IS NULL;`, [id]);
+        return projects[0];
     },
-    getProjectWithStatusAndUser: (project: IProject) => {
-        const projectStatus = projectStatusesServices.getProjectStatusById(project.statusId);
-        let user: IUser | undefined = usersServices.findUserById(project.userId);
-        if (!user) user = usersServices.unknownUser();
-        const userWithoutPassword = usersServices.getUserWithoutPassword(user);
-
-        const projectWithStatusAndUser = {
-            id: project.id,
-            title: project.title,
-            user: userWithoutPassword,
-            status: projectStatus,
+    createProject: async (project: IProject): Promise<number> => {
+        const [result]: [ResultSetHeader, FieldPacket[]] = await pool.query('INSERT INTO projects SET ?;', [project]);
+        return result.insertId;
+    },
+    updateProject: async (projectToUpdate: IProject) => {
+        const {
+          id, title, content, statusId,
+        } = projectToUpdate;
+        const project = await projectsServices.findProjectById(id!);
+    
+        const update = {
+          title: title || project.title,
+          content: content|| project.content,
+          statusId: statusId || project.statusId,
         };
-        return projectWithStatusAndUser;
-    },
-    createProject: (newProject: INewProject): number => {
-        const id = projects.length + 1;
-        const project: IProject = {
-            id,
-            ...newProject,
-        };
-        projects.push(project);
-        return id;
-    },
-    updateProject: (projectToUpdate: IProjectToUpdate) => {
-        const { id, title, content, statusId } = projectToUpdate;
-        const project = projectsServices.findProjectById(id);
-        if (project && title) project.title = title;
-        if (project && content) project.content = content;
-        if (project && statusId) project.statusId = statusId;
+        
+        const [result]: [ResultSetHeader, FieldPacket[]] = await pool.query('UPDATE projects SET ? WHERE id = ?;', [update, id]);
+        if (result.affectedRows < 1) {
+          return false;
+        }
         return true;
     },
-    deleteProject: (id: number): Boolean => {
-        const index = projects.findIndex(element => element.id === id);
-        if (index === -1) return false;
-        projects.splice(index, 1);
+    deleteProject: async (id: number): Promise<Boolean> => {
+        const [result]: [ResultSetHeader, FieldPacket[]] = await pool.query('UPDATE projects SET dateDeleted = ? WHERE id = ?;', [Date.now(), id]);
+        if (result.affectedRows < 1) {
+          return false;
+        }
         return true;
-    },
+      },
 
 }
 

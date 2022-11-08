@@ -1,110 +1,110 @@
-import { Request, Response } from "express";
-import commentsServices from "../comments/services";
-import { INewProject, IProjectToUpdate } from "./interfaces";
-import projectsServices from "./services";
+import { Request, Response } from 'express';
+import commentsServices from '../comments/services';
+import { IProject, IProjectSQL } from './interfaces';
+import projectsServices from './services';
 
 const projectsControllers = {
-    getAllProjects: (req: Request, res: Response) => {
-        const projectsWithStatusesAndUsers = projectsServices.getAllProjects();
+    getAllProjects: async (req: Request, res: Response) => {
+        const projectsWithStatusesAndUsers = await projectsServices.getAllProjects();
         res.status(200).json({
-            success: true,
-            message: 'List of projects',
-            projects: projectsWithStatusesAndUsers,
+          success: true,
+          message: 'Project list',
+          posts: projectsWithStatusesAndUsers,
         });
     },
-    getProjectById: (req: Request, res: Response) => {
-        const id = parseInt(req.params.id);
-        const project = projectsServices.findProjectById(id);
+    getProjectById: async (req: Request, res: Response) => {
+        const id = parseInt(req.params.id, 10);
+        const project = await projectsServices.findProjectById(id);
         if (!project) {
-            return res.status(404).json({
-                success: false,
-                message: `project not found`,
-            });
-        };
-    
-        const projectWithStatusAndUser = projectsServices.getProjectWithStatusAndUser(project);
+          return res.status(404).json({
+            success: false,
+            message: 'Project not found',
+          });
+        }
         return res.status(200).json({
-            success: true,
-            message: `project`,
-            data: {
-                project: projectWithStatusAndUser,
-            },
+          success: true,
+          message: 'Project',
+          data: {
+            project,
+          },
         });
     },
-    createProject: (req: Request, res: Response) => {
-        const { title, content, userId, statusId } = req.body;
-        const newProject: INewProject = {
-            title,
-            content,
-            userId,
-            statusId,
+    createProject: async (req: Request, res: Response) => {
+        const {title, content, statusId} = req.body;
+        const userId = res.locals.user?.id;
+        if (!title || !content || !statusId) {
+          return res.status(400).json({
+            success: false,
+            message: 'Some data is missing (title, content, userId, statusId)',
+          });
+        }
+        const newProject: IProject = {
+          title,
+          content,
+          statusId,
+          userId,
         };
-        const id: number = projectsServices.createProject(newProject);
-    
+        const id = await projectsServices.createProject(newProject);
         return res.status(201).json({
-            success: true,
-            message: `project with id ${id} created`,
+          success: true,
+          message: `Project with id ${id} created`,
         });
     },
-    updateProject: (req: Request, res: Response) => {
-        const id = parseInt(req.params.id);
-        const { title, content, statusId } = req.body;
-        const project = projectsServices.findProjectById(id);
+    updateProject: async (req: Request, res: Response) => {
+        const id = parseInt(req.params.id, 10);
+        const {title, content, statusId} = req.body;
+        const project = await projectsServices.findProjectById(id);
         if (!project) {
-            return res.status(404).json({
-                success: false,
-                message: `project not found`,
-            });
+          return res.status(404).json({
+            success: false,
+            message: 'Project not found',
+          });
         }
         if (!title && !content && !statusId) {
-            return res.status(400).json({
-                success: false,
-                message: `Nothing to change`,
-            });
+          return res.status(400).json({
+            success: false,
+            message: 'Nothing to change',
+          });
         }
-        const projectToUpdate: IProjectToUpdate = {
-            id,
-            title,
-            content,
-            statusId,
+        const projectToUpdate: IProject = {
+          id,
+          title,
+          content,
+          statusId,
         };
-
-        projectsServices.updateProject(projectToUpdate);
     
-        if (title) project.title = title;
-        if (content) project.content = content;
-        if (statusId) project.statusId = statusId;
+        await projectsServices.updateProject(projectToUpdate);
     
         return res.status(200).json({
-            success: true,
-            message: `project updated`,
+          success: true,
+          message: 'Project updated',
         });
     },
-    deleteProject: (req: Request, res: Response) => {
-        const id = parseInt(req.params.id);
-        const result = projectsServices.deleteProject(id);
+    deleteProject: async (req: Request, res: Response) => {
+        const id = parseInt(req.params.id, 10);
+        const result = await projectsServices.deleteProject(id);
         if (!result) {
-            return res.status(404).json({
-                success: false,
-                message: `project not found`,
-            });
+          return res.status(404).json({
+            success: false,
+            message: 'Project not found',
+          });
         }
         return res.status(200).json({
-            success: true,
-            message: `project deleted`,
+          success: true,
+          message: 'Project deleted',
         });
     },
-    getCommentsByProjectId: (req: Request, res: Response) => {
-        const id = parseInt(req.params.id);
-        const comments = commentsServices.findCommentsByProjectId(id);
+    getCommentsByProjectId: async (req: Request, res: Response) => {
+        const id = parseInt(req.params.id, 10);
+        const comments = await commentsServices.findCommentsByProjectId(id);
         return res.status(200).json({
-            success: true,
-            message: `Comments of project with id: ${id}`,
-            data: {
-                comments,
-            },
+          success: true,
+          message: `Comments of pproject with id: ${id}`,
+          data: {
+            comments,
+          },
         });
-    }
+    },
 }
 
 export default projectsControllers;
