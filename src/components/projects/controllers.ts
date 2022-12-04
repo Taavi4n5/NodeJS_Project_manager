@@ -9,7 +9,7 @@ const projectsControllers = {
         res.status(200).json({
           success: true,
           message: 'Project list',
-          posts: projectsWithStatusesAndUsers,
+          projects: projectsWithStatusesAndUsers,
         });
     },
     getProjectById: async (req: Request, res: Response) => {
@@ -99,7 +99,7 @@ const projectsControllers = {
         const comments = await commentsServices.findCommentsByProjectId(id);
         return res.status(200).json({
           success: true,
-          message: `Comments of pproject with id: ${id}`,
+          message: `Comments of project with id: ${id}`,
           data: {
             comments,
           },

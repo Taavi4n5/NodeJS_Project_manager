@@ -49,7 +49,7 @@ const usersServices = {
         return true;
     },
     deleteUser: async (id: number): Promise<Boolean> => {
-        const [result]: [ResultSetHeader, FieldPacket[]] = await pool.query(`UPDATE users SET fletedDate = ? WHERE id = ?`, [new Date(), id]);
+        const [result]: [ResultSetHeader, FieldPacket[]] = await pool.query(`UPDATE users SET deletedDate = ? WHERE id = ?`, [new Date(), id]);
         if(result.affectedRows < 1) {
             return false;
         };

@@ -4,11 +4,11 @@ import { IProject, IProjectSQL } from './interfaces';
 
 const projectsServices = {
     getAllProjects: async (): Promise<IProjectSQL[]> => {
-        const [projects]: [IProjectSQL[], FieldPacket[]] = await pool.query(`SELECT projects.id, projects.title, projects.content, projects.dateCreated, users.id AS userId, users.firstName, users.lastName FROM projects INNER JOIN users ON projects.users_id = users.id WHERE projects.dateDeleted IS NULL;`);
+        const [projects]: [IProjectSQL[], FieldPacket[]] = await pool.query(`SELECT projects.id, projects.title, projects.content, projects.dateCreated, users.id AS userId, users.firstName, users.lastName FROM projects INNER JOIN users ON projects.userId = users.id WHERE projects.dateDeleted IS NULL;`);
         return projects;
     },
     findProjectById: async (id: number): Promise<IProjectSQL> => {
-        const [projects]: [IProjectSQL[], FieldPacket[]] = await pool.query(`SELECT projects.id, projects.title, projects.content, projects.createdDate, users.id AS userId, users.firstName, users.lastName FROM projects INNER JOIN users ON projects.users_id = users.id WHERE projects.id = ? AND projects.dateDeleted IS NULL;`, [id]);
+        const [projects]: [IProjectSQL[], FieldPacket[]] = await pool.query(`SELECT projects.id, projects.title, projects.content, projects.createdDate, users.id AS userId, users.firstName, users.lastName FROM projects INNER JOIN users ON projects.userId = users.id WHERE projects.id = ? AND projects.dateDeleted IS NULL;`, [id]);
         return projects[0];
     },
     createProject: async (project: IProject): Promise<number> => {

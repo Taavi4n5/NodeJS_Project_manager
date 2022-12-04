@@ -19,7 +19,7 @@ const authController = {
             }); 
         }
         const match = await authServices.compare(password, user.password);
-        console.log(password, user.password);
+
         if (!match) {
             return res.status(401).json({
                 success: false,

@@ -6,7 +6,7 @@ interface IUser {
     lastName: string;
     email: string;
     password: string;
-    role?: 'Admin' | 'User';
+    role: 'Admin' | 'User';
 }
 
 interface IUserSQL extends IUser, RowDataPacket {}

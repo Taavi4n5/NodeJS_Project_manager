@@ -4,8 +4,8 @@ import commentsController from './controllers';
 const commentsRoutes = express.Router();
 
 commentsRoutes
-    .get('/', commentsController.getAllComments)
-    .get('/:id', commentsController.getCommentsById)
+    .get('/', authMiddleware.isLoggedIn, commentsController.getAllComments)
+    .get('/:id', authMiddleware.isLoggedIn, commentsController.getCommentsById)
     .post('/',authMiddleware.isLoggedIn, commentsController.createComment)
     .delete('/:id',authMiddleware.isLoggedIn, commentsController.deleteComment);
 

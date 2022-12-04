@@ -52,7 +52,8 @@ const usersControllers = {
             firstName,
             lastName,
             email,
-            password
+            password,
+            role: 'User',
           };
       
           const result = usersServices.updateUser(userToUpdate);
@@ -68,7 +69,10 @@ const usersControllers = {
     createUser: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const {
-                firstName, lastName, email, password,
+                firstName,
+                lastName,
+                email,
+                password,
             } = req.body;
             const newUser: IUser = {
                 firstName,

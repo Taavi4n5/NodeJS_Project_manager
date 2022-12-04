@@ -47,7 +47,7 @@ const commentsControllers = {
         const id: number = await commentsServices.createComment(newComment);
         return res.status(201).json({
             success: true,
-            message: `comment with id ${id} created`,
+            message: `Comment with id ${id} created`,
         });
     },
     deleteComment: async (req: Request, res: Response) => {
