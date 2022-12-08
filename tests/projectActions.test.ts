@@ -21,8 +21,9 @@ const updatedProject = {
 describe("Project actions test", () => {
   describe("GET /api/v1/projects", () => {
     it("shows all projects and returns 200", async () => {
-      const login = await request(app).post("/api/v1/login").send(user);
-      const response = await request(app).get("/api/v1/projects");
+     const login = await request(app).post("/api/v1/login").send(user);
+      const token = login.body.token;
+      const response = await request(app).get("/api/v1/projects").set("Authorization", `Bearer ${token}`);
       expect(response.body).to.be.a("object");
       expect(response.statusCode).to.equal(200);
       expect(response.body.success).to.be.true;
@@ -30,8 +31,9 @@ describe("Project actions test", () => {
     });
     describe("GET api/v1/projects/1", () => {
       it("gets project with an id of 1 and returns 200", async () => {
-        const login = await request(app).post("/api/v1/login").send(user);
-        const response = await request(app).get("/api/v1/projects/1");
+         const login = await request(app).post("/api/v1/login").send(user);
+      const token = login.body.token;
+        const response = await request(app).get("/api/v1/projects/1").set("Authorization", `Bearer ${token}`);
         expect(response.body).to.be.a("object");
         expect(response.statusCode).to.equal(200);
         expect(response.body.success).to.be.true;
@@ -39,8 +41,9 @@ describe("Project actions test", () => {
       });
       describe("GET api/v1/projects/1/comments", () => {
         it("displays comments of the project with an id of 1 and returns 200", async () => {
-          const login = await request(app).post("/api/v1/login").send(user);
-          const response = await request(app).get("api/v1/projects/1/comments");
+           const login = await request(app).post("/api/v1/login").send(user);
+      const token = login.body.token;
+          const response = await request(app).get("api/v1/projects/1/comments").set("Authorization", `Bearer ${token}`);
           expect(response.body).to.be.a("object");
           expect(response.statusCode).to.equal(200);
           expect(response.body.success).to.be.true;
@@ -51,10 +54,13 @@ describe("Project actions test", () => {
         });
         describe("POST api/v1/projects", () => {
           it("creates a post and returns 200", async () => {
-            const login = await request(app).post("/api/v1/login").send(user);
-            const response = await await request(app)
+            
+           const login = await request(app).post("/api/v1/login").send(user);
+      const token = login.body.token;
+
+            const response = await request(app)
               .post("api/v1/projects")
-              .send(newProject);
+              .send(newProject).set("Authorization", `Bearer ${token}`);
             expect(response.body).to.be.a("object");
             expect(response.statusCode).to.equal(200);
             expect(response.body.success).to.be.true;
@@ -64,10 +70,11 @@ describe("Project actions test", () => {
           });
           describe("PATCH api/v1/projects/:id", () => {
             it("updates the project with new data and returns 200", async () => {
-              const login = await request(app).post("/api/v1/login").send(user);
+             const login = await request(app).post("/api/v1/login").send(user);
+      const token = login.body.token;
               const response = await request(app)
                 .patch("/api/v1/projects/:id")
-                .send(updatedProject);
+                .send(updatedProject).set("Authorization", `Bearer ${token}`);
               expect(response.body).to.be.a("object");
               expect(response.statusCode).to.equal(200);
               expect(response.body.success).to.be.true;
@@ -75,12 +82,11 @@ describe("Project actions test", () => {
             });
             describe("DELETE api/v1/projects/:id", () => {
               it("deletes the project and returns 200", async () => {
-                const login = await request(app)
-                  .post("/api/v1/login")
-                  .send(user);
+ const login = await request(app).post("/api/v1/login").send(user);
+      const token = login.body.token;
                 const response = await request(app).delete(
                   "api/v1/projects/:id"
-                );
+                ).set("Authorization", `Bearer ${token}`);
                 expect(response.body).to.be.a("object");
                 expect(response.statusCode).to.equal(200);
                 expect(response.body.success).to.be.true;

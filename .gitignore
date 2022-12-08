@@ -105,3 +105,8 @@ dist
 
 # config
 apiConfig.ts
+
+# db files
+.sql
+.mwb
+.bak
