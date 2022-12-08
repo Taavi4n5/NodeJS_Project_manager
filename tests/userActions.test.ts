@@ -18,7 +18,6 @@ const user = {
 const updatedUser = {
   firstName: "Mati",
   lastName: "Kaal",
-  email: "mati@kaal.ee",
   password: "mati",
 };
 
@@ -29,14 +28,13 @@ describe("User actions test", () => {
       expect(response.body).to.be.a("object");
       expect(response.statusCode).to.equal(200);
       expect(response.body.success).to.be.true;
-      expect(response.body.message).to.equal("User with id ${id} created");
     });
-    describe("PATCH api/v1/users/:id", () => {
+    describe("PATCH api/v1/users/2", () => {
       it("updates the user with new data and returns 200", async () => {
  const login = await request(app).post("/api/v1/login").send(user);
       const token = login.body.token;
         const response = await request(app)
-          .patch("/api/v1/users/:id")
+          .patch("/api/v1/users/2")
           .send(updatedUser).set("Authorization", `Bearer ${token}`);
         expect(response.body).to.be.a("object");
         expect(response.statusCode).to.equal(200);
@@ -47,17 +45,17 @@ describe("User actions test", () => {
         it("gives user info about his user and returns 200", async () => {
  const login = await request(app).post("/api/v1/login").send(user);
       const token = login.body.token;
-          const response = await request(app).get("api/v1/users").set("Authorization", `Bearer ${token}`);
+          const response = await request(app).get("/api/v1/users").set("Authorization", `Bearer ${token}`);
           expect(response.body).to.be.a("object");
           expect(response.statusCode).to.equal(200);
           expect(response.body.success).to.be.true;
           expect(response.body.message).to.a("string");
         });
-        describe("DELETE api/v1/users/:id", () => {
+        describe("DELETE api/v1/users/2", () => {
           it("deletes the user and returns 200", async () => {
  const login = await request(app).post("/api/v1/login").send(user);
       const token = login.body.token;
-            const response = await request(app).delete("api/v1/users/:id").set("Authorization", `Bearer ${token}`);
+            const response = await request(app).delete("/api/v1/users/:id").set("Authorization", `Bearer ${token}`);
             expect(response.body).to.be.a("object");
             expect(response.statusCode).to.equal(200);
             expect(response.body.success).to.be.true;

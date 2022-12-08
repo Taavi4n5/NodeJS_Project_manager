@@ -6,7 +6,7 @@ import generalRoutes from './components/general/routes';
 import projectStatusesRoutes from './components/projectStatuses/routes';
 import authController from './components/auth/controllers';
 import authMiddleware from './components/auth/middlewares';
-import config from './apiConfig';
+import config from '../apiConfig';
 const { path } = config;
 
 const app = express();

@@ -8,6 +8,7 @@ const config = {
         user: '',
         password: '',
         database: '',
+        port: '',
     }
 }
 

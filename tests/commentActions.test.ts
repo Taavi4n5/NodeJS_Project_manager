@@ -23,46 +23,42 @@ describe("Comment actions test", () => {
       expect(response.body).to.be.a("object");
       expect(response.statusCode).to.equal(200);
       expect(response.body.success).to.be.true;
-      expect(response.body.projects).to.a("array");
     });
-    describe("GET api/v1/comments/1", () => {
+    describe("GET api/v1/comments/3", () => {
       it("gets comment with an id of 1 and returns 200", async () => {
         const login = await request(app).post("/api/v1/login").send(user);
         const token = login.body.token;
         const response = await request(app)
-          .get("/api/v1/comments/1")
+          .get("/api/v1/comments/3")
           .set("Authorization", `Bearer ${token}`);
         expect(response.body).to.be.a("object");
         expect(response.statusCode).to.equal(200);
         expect(response.body.success).to.be.true;
-        expect(response.body.message).to.equal("Comments");
+        expect(response.body.message).to.equal("Comment");
       });
       describe("POST api/v1/comments", () => {
         it("creates a comment and returns 200", async () => {
           const login = await request(app).post("/api/v1/login").send(user);
           const token = login.body.token;
           const response = await request(app)
-            .post("api/v1/comments")
+            .post("/api/v1/comments")
             .send(newComment)
             .set("Authorization", `Bearer ${token}`);
           expect(response.body).to.be.a("object");
           expect(response.statusCode).to.equal(200);
           expect(response.body.success).to.be.true;
-          expect(response.body.message).to.equal(
-            "Comment with id ${id} created"
-          );
         });
-        describe("DELETE api/v1/comments/:id", () => {
+        describe("DELETE api/v1/comments/6", () => {
           it("deletes the comment and returns 200", async () => {
             const login = await request(app).post("/api/v1/login").send(user);
             const token = login.body.token;
             const response = await request(app)
-              .delete("api/v1/projects/:id")
+              .delete("/api/v1/projects/6")
               .set("Authorization", `Bearer ${token}`);
             expect(response.body).to.be.a("object");
             expect(response.statusCode).to.equal(200);
             expect(response.body.success).to.be.true;
-            expect(response.body.message).to.equal("Project deleted");
+            expect(response.body.message).to.equal("Comment deleted");
           });
         });
       });

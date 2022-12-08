@@ -34,17 +34,17 @@ const wrongUser = {
 
 describe('Login authorization test', () => {
     describe('GET /api/v1/users', () => {
-      it('responds with error message and statuscode 404', async () => {
+      it('responds with error message and statuscode 401', async () => {
         const response = await request(app).get('/api/v1/users');
         expect(response.body).to.be.a('object');
-        expect(response.statusCode).to.equal(400);
+        expect(response.statusCode).to.equal(401);
         expect(response.body.success).to.be.false;
         expect(response.body.message).to.equal("Token not found");
       });
       it('responds with userlist and statuscode 200', async () => {
         const login = await request(app).post('/api/v1/login').send(admin);
         const token = login.body.token;
-        const response = await request(app).get('/api/v1/user').set('Authorization', `Bearer ${token}` );
+        const response = await request(app).get('/api/v1/users').set('Authorization', `Bearer ${token}` );
         expect(response.body).to.be.a('object');
         expect(response.statusCode).to.equal(200);
         expect(response.body.success).to.be.true;

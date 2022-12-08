@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { IUser } from '../users/interfaces';
 import jwt from 'jsonwebtoken';
-import config from '../../apiConfig';
+import config from '../../../apiConfig';
 const { saltRounds, jwtSecret } = config;
 
 

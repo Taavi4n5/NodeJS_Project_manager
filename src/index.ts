@@ -1,4 +1,4 @@
-import config from "./apiConfig";
+import config from "../apiConfig";
 import app from "./app";
 
 const {PORT} = config;

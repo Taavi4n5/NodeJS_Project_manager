@@ -100,9 +100,7 @@ const projectsControllers = {
         return res.status(200).json({
           success: true,
           message: `Comments of project with id: ${id}`,
-          data: {
-            comments,
-          },
+          comments,
         });
     },
 }
